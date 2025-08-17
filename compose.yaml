@@ -1,0 +1,33 @@
+services:
+  kairos-server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/app
+      - /app/tmp
+      - /go/pkg/mod:/go/pkg/mod   # cache Go modules
+    environment:
+      - CGO_ENABLED=0
+    networks:
+      - kairos-net
+
+  kairos-client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./client:/app
+      - /app/node_modules    # cache Node modules
+    depends_on:
+      - kairos-server
+    networks:
+      - kairos-net
+
+networks:
+  kairos-net:
+    driver: bridge
