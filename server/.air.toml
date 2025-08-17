@@ -11,6 +11,3 @@ tmp_dir = "tmp"
 
 [log]
   time = true
-
-
-  
