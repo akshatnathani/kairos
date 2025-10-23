@@ -140,7 +140,9 @@ Kairos addresses these gaps through:
 - Redis 6+
 - Docker & Docker Compose
 
-### Local Development Setup
+### Development Setup
+
+#### Local Development Setup
 
 1. **Clone the repository**
    ```bash
@@ -168,19 +170,25 @@ Kairos addresses these gaps through:
    - Backend API: http://localhost:3000
    - API Documentation: http://localhost:8080/swagger
 
+#### Using Docker
+
+```bash
+docker compose up --build --watch
+```
+
 ### Environment Variables
 Create `.env.local` files in both `client/` and `config/local.yaml` `server/` directories:
 
 ```bash
 # Server (.env)
-DATABASE_URL=postgresql://user:pass@localhost:5432/kairos
-REDIS_URL=redis://localhost:6379
-OPENAI_API_KEY=your_openai_key
-JWT_SECRET=your_jwt_secret
+# DATABASE_URL=postgresql://user:pass@localhost:5432/kairos
+# REDIS_URL=redis://localhost:6379
+# OPENAI_API_KEY=your_openai_key
+# JWT_SECRET=your_jwt_secret
 
 # Client (.env.local)
-NEXT_PUBLIC_API_URL=http://localhost:8080
-NEXT_PUBLIC_WS_URL=ws://localhost:8080/ws
+# NEXT_PUBLIC_API_URL=http://localhost:8080
+# NEXT_PUBLIC_WS_URL=ws://localhost:8080/ws
 ```
 
 ## 📁 Project Structure
@@ -212,10 +220,10 @@ kairos/
 │   └── package.json
 ├── docs/                  # Documentation
 ├── scripts/              # Deployment and utility scripts
-└── docker-compose.yml   # Local development environment
+└── compose.yaml   # Local development environment
 ```
 
-## 🎨 Implementation Highlights
+## Implementation Highlights
 
 ### RAG-Powered Job Matching
 - Vector embeddings for job descriptions and resume content
@@ -237,70 +245,16 @@ kairos/
 - Template-based generation with dynamic content injection
 - Version control for resume iterations and A/B testing
 
-## 🔮 Roadmap
 
-### Phase 1: MVP (Current)
-- [x] Basic resume builder with GitHub integration
-- [x] Simple ATS scoring algorithm
-- [x] LaTeX template system
-- [ ] User authentication and profiles
-- [ ] Basic job recommendations
 
-### Phase 2: Intelligence Enhancement
-- [ ] Multi-platform data aggregation
-- [ ] Advanced ML-based ATS scoring
-- [ ] Project quality assessment engine
-- [ ] Real-time collaboration features
-
-### Phase 3: Automation & Scale
-- [ ] Automated job application system
-- [ ] Advanced analytics and insights
-- [ ] Mobile application
-- [ ] Enterprise features for universities/bootcamps
-
-## 📊 Success Metrics
-
-### Technical Metrics
-- Resume generation time < 30 seconds
-- ATS score accuracy within 15% of manual assessment
-- 99.9% uptime for core services
-- Sub-second API response times
-
-### User Experience Metrics
-- User resume completion rate > 80%
-- Interview callback rate improvement > 25%
-- User retention rate > 60% after 30 days
-
-## 🤝 Contributing
-
-This is primarily a learning project, but contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ### Development Workflow
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes with tests
 4. Submit a pull request with clear description
-
-## 📜 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- OpenAI for GPT-4 API
-- The open-source community for amazing tools and libraries
-- Resume optimization research and ATS analysis studies
-
-## 📞 Contact
-
-**Developer**: Akash Thakkar  
-**Email**: contact@kairos-resume.com  
-**LinkedIn**: [Your LinkedIn Profile]  
-**Portfolio**: [Your Portfolio URL]
-
 ---
 
-**Disclaimer**: This is a portfolio/learning project. While functional, it's designed primarily for educational purposes and skill demonstration. Use responsibly and in accordance with platform terms of service.
 
 
 

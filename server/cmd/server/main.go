@@ -1,27 +1,25 @@
 package main
 
 import (
-	"log"
-	"net/http"
-	"log/slog"
+	"context"
 	"fmt"
+	"log"
+	"log/slog"
+	"net/http"
+	"os"
 	"os/signal"
 	"syscall"
-	"os"
-	"context"
 	"time"
-	"github.com/thakksht/kairos/internal/http/handler"
 
-	"github.com/gin-gonic/gin"
 	"github.com/thakksht/kairos/internal/config"
+	"github.com/thakksht/kairos/internal/router"
 )
 
-func main(){
+func main() {
+	// Must Load so that we can access the configuration
 	cfg := config.MustLoad()
 
-	router := gin.Default()
-
-	router.GET("/api/health", handler.GetHealth())
+	router := router.NewRouter()
 
 	// CORS middleware
 	corsHandler := func(next http.Handler) http.Handler {
@@ -39,9 +37,8 @@ func main(){
 		})
 	}
 
-
 	server := http.Server{
-		Addr:   cfg.HTTPServer.Addr,
+		Addr:    cfg.HTTPServer.Addr,
 		Handler: corsHandler(router),
 	}
 
@@ -52,13 +49,13 @@ func main(){
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
-	go func(){
+	go func() {
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("Failed to start server: %s", err.Error())
 		}
 	}()
 
-	<- done
+	<-done
 
 	slog.Info("Shutting down the server")
 
@@ -68,6 +65,6 @@ func main(){
 	if err := server.Shutdown(ctx); err != nil {
 		slog.Error("Failed to gracefully shutdown the server", "error", err)
 	}
-	
+
 	slog.Info("Server gracefully stopped")
 }
