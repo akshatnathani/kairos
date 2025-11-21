@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, Sparkles, CheckCircle2, X } from "lucide-react";
+import { Mail, Sparkles, CheckCircle2, X, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function WaitlistForm() {
   const [email, setEmail] = useState("");
@@ -22,69 +23,90 @@ export function WaitlistForm() {
 
   return (
     <>
-      <form
+      <motion.form
         onSubmit={handleSubmit}
-        className="w-full max-w-md mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500"
+        className="w-full max-w-md mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
       >
         <div className="relative group">
-          <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 to-primary/5 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="relative flex gap-2 p-2 bg-card border border-border rounded-2xl shadow-lg backdrop-blur-sm">
-            <div className="flex-1 relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground pointer-events-none" />
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/50 to-primary/30 rounded-full blur opacity-20 group-hover:opacity-60 transition duration-500" />
+          <div className="relative flex items-center p-1.5 bg-background border border-border/50 rounded-full shadow-xl backdrop-blur-xl">
+            <div className="flex-1 relative flex items-center pl-4">
+              <Mail className="w-5 h-5 text-muted-foreground/50 mr-3" />
               <Input
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Enter your email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full pl-11 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-12 text-base"
+                className="w-full border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 h-10 text-base placeholder:text-muted-foreground/50 p-0"
               />
             </div>
             <Button
               type="submit"
               disabled={loading}
               size="lg"
-              className="px-8 gap-2 bg-primary hover:bg-primary/90 shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02]"
+              className="rounded-full px-6 bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg hover:shadow-primary/25 transition-all duration-300"
             >
               {loading ? (
-                <span className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  Joining...
-                </span>
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin"
+                />
               ) : (
-                <span className="flex items-center gap-2">
+                <motion.span
+                  className="flex items-center gap-2 font-medium"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                >
                   Join Waitlist
-                  <Sparkles className="w-4 h-4" />
-                </span>
+                  <ArrowRight className="w-4 h-4" />
+                </motion.span>
               )}
             </Button>
           </div>
         </div>
-        <p className="text-xs text-center text-muted-foreground mt-4 animate-in fade-in duration-700 delay-300">
-          Join early adopters getting exclusive access and special pricing 🚀
-        </p>
-      </form>
+        <motion.p
+          className="text-xs text-center text-muted-foreground mt-4 flex items-center justify-center gap-1.5"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+          Join 2,000+ others waiting for access
+        </motion.p>
+      </motion.form>
 
-      {/* Snackbar Notification */}
-      {showSnackbar && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom-4 fade-in duration-300">
-          <div className="flex items-center gap-3 px-6 py-4 bg-card border border-green-500/20 rounded-2xl shadow-2xl backdrop-blur-xl">
-            <CheckCircle2 className="w-6 h-6 text-green-500 flex-shrink-0" />
-            <div className="flex flex-col">
-              <p className="font-semibold text-sm">You&apos;re on the list! 🎉</p>
-              <p className="text-xs text-muted-foreground">We&apos;ll notify you when we launch</p>
+      <AnimatePresence>
+        {showSnackbar && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: "-50%" }}
+            animate={{ opacity: 1, y: 0, x: "-50%" }}
+            exit={{ opacity: 0, y: 20, x: "-50%" }}
+            className="fixed bottom-8 left-1/2 z-50"
+          >
+            <div className="flex items-center gap-3 px-6 py-4 bg-background/80 border border-primary/20 rounded-2xl shadow-2xl backdrop-blur-xl">
+              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <CheckCircle2 className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex flex-col">
+                <p className="font-semibold text-sm text-foreground">You&apos;re on the list!</p>
+                <p className="text-xs text-muted-foreground">We&apos;ll notify you when we launch.</p>
+              </div>
+              <button
+                onClick={() => setShowSnackbar(false)}
+                className="ml-4 text-muted-foreground hover:text-foreground transition-colors p-1 hover:bg-muted rounded-full"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
-            <button
-              onClick={() => setShowSnackbar(false)}
-              className="ml-4 text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="Close notification"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

@@ -5,8 +5,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 export const metadata: Metadata = {
   title: "Kairos",
   description: "A modern application for managing all your problem related to resumes",
-  icons : {
-    icon:"/kairos-icon.png",
+  icons: {
+    icon: "/kairos-logo.png",
   }
 };
 
